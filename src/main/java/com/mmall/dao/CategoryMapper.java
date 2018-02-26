@@ -2,6 +2,8 @@ package com.mmall.dao;
 
 import com.mmall.pojo.Category;
 
+import java.util.List;
+
 public interface CategoryMapper {
     int deleteByPrimaryKey(Integer id);
 
@@ -14,4 +16,7 @@ public interface CategoryMapper {
     int updateByPrimaryKeySelective(Category record);
 
     int updateByPrimaryKey(Category record);
+
+    //用于获取当前节点的子节点集合
+    List<Category> getCategory(Integer parentId);
 }
