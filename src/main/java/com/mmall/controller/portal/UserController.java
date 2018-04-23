@@ -15,6 +15,7 @@ import javax.servlet.http.HttpSession;
 
 /**
  * Created by rabbit on 2018/2/6.
+ * RESTFul风格的响应规范
  */
 @Controller
 @RequestMapping("/user")
@@ -39,6 +40,7 @@ public class UserController {
         session.removeAttribute(Const.CURRENT_USER);
         return ServerResponse.createBySuccess("退出成功！");
     }
+
 
     @RequestMapping(value = "register.do",method = RequestMethod.POST)
     @ResponseBody

@@ -10,6 +10,10 @@
 
     <context:component-scan base-package="com.mmall" annotation-config="true"/>
 
+    <!--
+        <mvc:annotation-driven>会自动注册RequestMappingHandlerMapping与RequestMappingHandlerAdapter两个Bean,
+        这是Spring MVC为@Controller分发请求所必需的
+    -->
     <mvc:annotation-driven>
         <mvc:message-converters>
             <bean class="org.springframework.http.converter.StringHttpMessageConverter">

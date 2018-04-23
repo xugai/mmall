@@ -20,14 +20,29 @@
     <url-pattern>/*</url-pattern>
   </filter-mapping>
 
-
+  <!--
+    ServletRequestListener监听HTTP请求事件，Web服务器接收的每次请求都会通知该监听器。
+    spring容器启动和关闭操作由web容器的启动和关闭事件触发，但如果spring容器中的Bean需要request,session,globalsession
+    作用域的支持，spring容器本身就必须获得web容器的HTTP请求事件，以HTTP请求的事件驱动Bean作用域的控制逻辑。
+  -->
   <listener>
     <listener-class>org.springframework.web.context.request.RequestContextListener</listener-class>
   </listener>
 
+  <!--
+    这是使用Spring 必须配置 的
+  -->
   <listener>
     <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
   </listener>
+  <!--
+    Spring配置文件的声明
+    如果没有显式声明，则 系统默认 在WEB-INF/applicationContext.xml
+  -->
+  <!--
+    Tomcat 针对每个Context的默认classpath 是 WebApp/WEB-INF/ ,
+    它会从当前目录下的classes文件夹加载对应的class文件，会从lib文件下加载lib包
+  -->
   <context-param>
     <param-name>contextConfigLocation</param-name>
     <param-value>

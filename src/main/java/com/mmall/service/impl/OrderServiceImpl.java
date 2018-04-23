@@ -122,9 +122,19 @@ public class OrderServiceImpl implements IOrderService {
         if(order.getStatus() != Const.OrderStatusEnum.NO_PAY.getCode()){
             return ServerResponse.createByErrorMessage("此订单不是处于未支付状态,无法取消！");
         }
+        /**
+         *订单取消的话,相对应的商品库存也要及时增加回去
+         */
+        List<OrderItem> orderItemList = orderItemMapper.selectByUserIdAndOrderNo(userId, orderNo);
+        for (OrderItem orderItem : orderItemList) {
+            Product product = productMapper.selectByPrimaryKey(orderItem.getProductId());
+            product.setStock(product.getStock() + orderItem.getQuantity());
+            productMapper.updateByPrimaryKeySelective(product);
+        }
         Order updateOrder = new Order();
         updateOrder.setId(order.getId());
         updateOrder.setStatus(Const.OrderStatusEnum.CANCELED.getCode());
+
 
         int resultCount = orderMapper.updateByPrimaryKeySelective(updateOrder);
         if(resultCount > 0){

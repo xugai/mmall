@@ -9,9 +9,17 @@
      http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
      http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
 
-    <context:component-scan base-package="com.mmall" annotation-config="true"/>
+    <!--
+        发现以下一行的标签配置不是必须的，在当前的xml内容中，好像不存在需要通过扫包的方式进行实例获取
+        的情况
+    -->
+    <!--<context:component-scan base-package="com.mmall" annotation-config="true"/>-->
 
-    <bean id="propertyConfigurer"
+    <!--
+        在Spring中，使用PropertyPlaceholderConfigurer可以在XML配置文件中加入外部属性文件，当然也可以指定外部文件的编码。
+        在XML文件中用${key}替换指定的properties文件中的值。这样的话，只需要对properties文件进行修改，而不用对xml配置文件进行修改。
+    -->
+      <bean id="propertyConfigurer"
           class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
         <property name="order" value="2"/>
         <property name="ignoreUnresolvablePlaceholders" value="true"/>
@@ -76,6 +84,11 @@
 
     </bean>
 
+    <!--
+        MapperScannerConfigurer将扫描basePackage所指定的包下的所有接口类（包括子类），
+        如果它们在SQL映射文件中定义过，则将它们动态定义为一个Spring Bean，这样，我们在
+        Service中就可以直接注入映射接口的bean
+    -->
     <bean name="mapperScannerConfigurer" class="org.mybatis.spring.mapper.MapperScannerConfigurer">
         <property name="basePackage" value="com.mmall.dao"/>
     </bean>
