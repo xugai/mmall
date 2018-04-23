@@ -1,7 +1,67 @@
-<!DOCTYPE web-app PUBLIC
- "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
- "http://java.sun.com/dtd/web-app_2_3.dtd" >
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns="http://java.sun.com/xml/ns/javaee" version="2.5">
 
-<web-app>
   <display-name>Archetype Created Web Application</display-name>
+
+  <filter>
+    <filter-name>characterEncodingFilter</filter-name>
+    <filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+    <init-param>
+      <param-name>encoding</param-name>
+      <param-value>UTF-8</param-value>
+    </init-param>
+    <init-param>
+      <param-name>forceEncoding</param-name>
+      <param-value>true</param-value>
+    </init-param>
+  </filter>
+  <filter-mapping>
+    <filter-name>characterEncodingFilter</filter-name>
+    <url-pattern>/*</url-pattern>
+  </filter-mapping>
+
+  <!--
+    ServletRequestListener监听HTTP请求事件，Web服务器接收的每次请求都会通知该监听器。
+    spring容器启动和关闭操作由web容器的启动和关闭事件触发，但如果spring容器中的Bean需要request,session,globalsession
+    作用域的支持，spring容器本身就必须获得web容器的HTTP请求事件，以HTTP请求的事件驱动Bean作用域的控制逻辑。
+  -->
+  <listener>
+    <listener-class>org.springframework.web.context.request.RequestContextListener</listener-class>
+  </listener>
+
+  <!--
+    这是使用Spring 必须配置 的
+  -->
+  <listener>
+    <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+  </listener>
+  <!--
+    Spring配置文件的声明
+    如果没有显式声明，则 系统默认 在WEB-INF/applicationContext.xml
+  -->
+  <!--
+    Tomcat 针对每个Context的默认classpath 是 WebApp/WEB-INF/ ,
+    它会从当前目录下的classes文件夹加载对应的class文件，会从lib文件下加载lib包
+  -->
+  <context-param>
+    <param-name>contextConfigLocation</param-name>
+    <param-value>
+      classpath:applicationContext.xml
+    </param-value>
+  </context-param>
+
+  <servlet>
+    <servlet-name>dispatcher</servlet-name>
+    <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+    <load-on-startup>1</load-on-startup>
+  </servlet>
+
+
+
+  <servlet-mapping>
+    <servlet-name>dispatcher</servlet-name>
+    <url-pattern>*.do</url-pattern>
+  </servlet-mapping>
+
 </web-app>
+
