@@ -58,6 +58,9 @@ public class UserController {
     @ResponseBody
     public ServerResponse<User> getUserInfo(HttpSession session){
         User user =(User) session.getAttribute(Const.CURRENT_USER);
+        if(user == null){
+            return ServerResponse.createByErrorCodeAndMessage(ResponseCode.NEED_LOGIN.getCode(),ResponseCode.NEED_LOGIN.getDesc());
+        }
         return ServerResponse.createBySuccess(user);
     }
 
