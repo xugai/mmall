@@ -95,7 +95,7 @@ public class OrderServiceImpl implements IOrderService {
         for (OrderItem orderItem : orderItemList) {
             orderItem.setOrderNo(order.getOrderNo());
         }
-        //实行mybatis批量插入
+        //执行mybatis批量插入
         int resultCount = orderItemMapper.batchInsert(orderItemList);
         if(resultCount <= 0){
             return ServerResponse.createByErrorMessage("Mybatis批量插入数据失败！");
@@ -134,7 +134,6 @@ public class OrderServiceImpl implements IOrderService {
         Order updateOrder = new Order();
         updateOrder.setId(order.getId());
         updateOrder.setStatus(Const.OrderStatusEnum.CANCELED.getCode());
-
 
         int resultCount = orderMapper.updateByPrimaryKeySelective(updateOrder);
         if(resultCount > 0){
@@ -289,7 +288,7 @@ public class OrderServiceImpl implements IOrderService {
     //内部生成订单号方式
     private long generateOrderNo(){
         long currentTime = System.currentTimeMillis();
-        return currentTime+new Random().nextInt(100);
+        return currentTime + new Random().nextInt(100);
     }
 
     private BigDecimal getTotalPrice(List<OrderItem> orderItemList){
@@ -491,6 +490,7 @@ public class OrderServiceImpl implements IOrderService {
         if(!Configs.getPid().equals(seller_id)){
             return ServerResponse.createByErrorMessage("回调的商户id匹配不上！");
         }
+        //如果本次回调是通知我们客户付款成功，则我们要记录本次交易时间
         if(Const.AlipayCallback.TRADE_STATUS_TRADE_SUCCESS.equals(trade_status)){
             order.setPaymentTime(DateTimeUtil.strToDate(map.get("gmt_payment")));
             order.setStatus(Const.OrderStatusEnum.PAID.getCode());
@@ -512,7 +512,7 @@ public class OrderServiceImpl implements IOrderService {
     public ServerResponse<Boolean> queryOrderpayStatus(Integer userId,Long orderNo){
         Order order = orderMapper.selectByUserIdAndOrderNo(orderNo, userId);
         if(order == null){
-            return ServerResponse.createByErrorMessage("当前用户无该订单生成！");
+            return ServerResponse.createByErrorMessage("当前用户并无该订单！");
         }
         if(order.getStatus() >= Const.OrderStatusEnum.PAID.getCode()){
             return ServerResponse.createBySuccess(true);

@@ -100,11 +100,12 @@ public class UserController {
             return ServerResponse.createByErrorMessage("未登录的用户,请登录后重试！");
         }
         user.setId(currentUser.getId());
-        if(iUserService.updateInformation(user).isSuccess()){
-            iUserService.updateInformation(user).getData().setUsername(currentUser.getUsername());
-            session.setAttribute(Const.CURRENT_USER,iUserService.updateInformation(user).getData());
+        ServerResponse<User> response = iUserService.updateInformation(user);
+        if(response.isSuccess()){
+            response.getData().setUsername(currentUser.getUsername());
+            session.setAttribute(Const.CURRENT_USER,response.getData());
         }
-        return iUserService.updateInformation(user);
+        return response;
     }
 
     @RequestMapping(value = "get_information.do",method = RequestMethod.POST)

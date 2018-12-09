@@ -70,6 +70,11 @@
         </javaClientGenerator>
 
 
+
+        <!--
+            通过enableCountByExample, enableUpdateByExample, enableDeleteByExample, enableSelectByExample,
+            selectByExampleQueryId等属性可以控制是否生成和使用xxxExample类在查询中替代模型类
+        -->
         <table tableName="mmall_shipping" domainObjectName="Shipping" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false" />
         <table tableName="mmall_cart" domainObjectName="Cart" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false" />
         <table tableName="mmall_cart_item" domainObjectName="CartItem" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false" />

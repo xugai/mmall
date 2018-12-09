@@ -32,7 +32,7 @@ public class CategoryManageController {
 
     @RequestMapping(value="add_category.do")
     @ResponseBody
-    public ServerResponse addCategory(HttpSession session, @RequestParam(value="parentId",defaultValue = "0") Integer parentId,
+    public ServerResponse addCategory(HttpSession session, @RequestParam(value = "parentId",defaultValue = "0") Integer parentId,
                                       String categoryName){
         User user = (User) session.getAttribute(Const.CURRENT_USER);
         if(user == null){
@@ -59,7 +59,7 @@ public class CategoryManageController {
 
     @RequestMapping(value="get_category.do")
     @ResponseBody
-    public ServerResponse<List<Category>> getCategory(HttpSession session,@RequestParam(value="categoryId",defaultValue = "0") Integer categoryId){
+    public ServerResponse<List<Category>> getCategory(HttpSession session,@RequestParam(value = "categoryId",defaultValue = "0") Integer categoryId){
         User user = (User) session.getAttribute(Const.CURRENT_USER);
         if(user == null){
             return ServerResponse.createByErrorCodeAndMessage(ResponseCode.NEED_LOGIN.getCode(),ResponseCode.NEED_LOGIN.getDesc());

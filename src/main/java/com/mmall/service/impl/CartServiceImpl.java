@@ -54,6 +54,7 @@ public class CartServiceImpl implements ICartService {
             //如果商品已经存在当前用户的购物车内,则修改该商品在购物车中的数量
             count = cart.getQuantity() + count;
             cart.setQuantity(count);
+            cartMapper.updateByPrimaryKey(cart);
         }
         return this.list(userId);
     }
@@ -82,7 +83,7 @@ public class CartServiceImpl implements ICartService {
         }
         List<String> productIdList = Splitter.on(",").splitToList(productIds);
         cartMapper.deleteCart(userId,productIdList);
-        CartVo cartVo = this.getCartVo(userId);
+//        CartVo cartVo = this.getCartVo(userId);
         return this.list(userId);
     }
 

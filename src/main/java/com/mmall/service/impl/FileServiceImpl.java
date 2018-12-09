@@ -49,9 +49,12 @@ public class FileServiceImpl implements IFileService {
             //调用下面此句,文件已经上传成功到我们的upload文件夹里
             file.transferTo(targetFile);
             //至此,targetFile已经上传到我们的FTP服务器上
-            FTPUtil.uploadFile(Lists.newArrayList(targetFile));
-            // 至此,传完之后,删除掉upload里面的文件，避免文件存储量过大
-            targetFile.delete();
+            if(FTPUtil.uploadFile(Lists.newArrayList(targetFile))) {
+                // 至此,传完之后,删除掉upload里面的文件，避免文件存储量过大
+                targetFile.delete();
+            }else{
+                throw new Exception();
+            }
         }catch(Exception ex){
             logger.error("上传文件异常！",ex);
             return null;

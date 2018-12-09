@@ -123,7 +123,7 @@ public class ProductManageController {
             return ServerResponse.createByErrorCodeAndMessage(ResponseCode.NEED_LOGIN.getCode(), ResponseCode.NEED_LOGIN.getDesc());
         }
         if (iUserService.checkAdminRole(user).isSuccess()) {
-            //以下一行代码会实现在该方法被调用时自动在webapp下面创建upload文件夹（若没有则自动创建）
+
             String path = request.getSession().getServletContext().getRealPath("upload");
             String targetFileName = iFileService.upload(file, path);
             String url = PropertiesUtil.getProperty("ftp.server.http.prefix");
@@ -174,7 +174,7 @@ public class ProductManageController {
             return resultMap;
         } else {
             resultMap.put("success", false);
-            resultMap.put("msg", "请用管理员的身份进行登录操作！");
+            resultMap.put("msg", "请用管理员的身份进行登录后再操作！");
             return resultMap;
         }
     }
