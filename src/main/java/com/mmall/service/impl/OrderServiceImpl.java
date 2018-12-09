@@ -163,7 +163,7 @@ public class OrderServiceImpl implements IOrderService {
         }
         orderProductVo.setPayment(payment);
         orderProductVo.setOrderItemVoList(orderItemVoList);
-        orderProductVo.setImageHost(PropertiesUtil.getProperty("ftp.server.http.prefix"));
+        orderProductVo.setImageHost("http://img.immall.tk/");
         return ServerResponse.createBySuccess(orderProductVo);
     }
 
@@ -229,7 +229,7 @@ public class OrderServiceImpl implements IOrderService {
         orderVo.setCloseTime(DateTimeUtil.dateToStr(order.getCloseTime()));
         orderVo.setSendTime(DateTimeUtil.dateToStr(order.getSendTime()));
 
-        orderVo.setImageHost(PropertiesUtil.getProperty("ftp.server.http.prefix"));
+        orderVo.setImageHost("http://img.immall.tk/");
 
         List<OrderItemVo> orderItemVoList = Lists.newArrayList();
         for (OrderItem orderItem : orderItemList) {
@@ -437,7 +437,7 @@ public class OrderServiceImpl implements IOrderService {
                 }
 
                 logger.info("qrPath:" + qrPath);
-                String qrUrl = PropertiesUtil.getProperty("ftp.server.http.prefix") + targetFile.getName();
+                String qrUrl = "http://img.immall.tk/" + targetFile.getName();
                 map.put("qrPath", qrUrl);
                 return ServerResponse.createBySuccess(map);
 
