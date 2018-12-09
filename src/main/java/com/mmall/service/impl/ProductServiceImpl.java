@@ -105,7 +105,7 @@ public class ProductServiceImpl implements IProductService {
         productDetailVo.setStock(product.getStock());
 
         //imageHost
-        String imageHost = PropertiesUtil.getProperty("ftp.server.http.prefix","ftp://173.82.153.147/img/");
+        String imageHost = "img.immall.tk/";
         productDetailVo.setImageHost(imageHost);
         //parentCategoryId
         Category category = categoryMapper.selectByPrimaryKey(product.getCategoryId());
