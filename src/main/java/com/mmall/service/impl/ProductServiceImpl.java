@@ -13,7 +13,6 @@ import com.mmall.pojo.Product;
 import com.mmall.service.ICategoryService;
 import com.mmall.service.IProductService;
 import com.mmall.utils.DateTimeUtil;
-import com.mmall.utils.PropertiesUtil;
 import com.mmall.vo.ProductDetailVo;
 import com.mmall.vo.ProductListVo;
 import org.apache.commons.lang3.StringUtils;
@@ -150,7 +149,7 @@ public class ProductServiceImpl implements IProductService {
         productListVo.setStatus(product.getStatus());
         productListVo.setSubtitle(product.getSubtitle());
 
-        productListVo.setImageHost(PropertiesUtil.getProperty("ftp.server.http.prefix","ftp://192.168.230.128/"));
+        productListVo.setImageHost("http://img.immall.tk/");
         return productListVo;
     }
 
