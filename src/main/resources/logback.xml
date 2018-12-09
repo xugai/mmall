@@ -16,6 +16,9 @@
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <fileNamePattern>D:/QLDownload/apache-tomcat-7.0.75/logs/mmall.log.%d{yyyy-MM-dd}.gz</fileNamePattern>
             <append>true</append>
+            <!--
+                规定每次生成的日志文件最多存储10天
+            -->
             <maxHistory>10</maxHistory>
         </rollingPolicy>
         <encoder>

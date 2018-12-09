@@ -47,6 +47,10 @@ public class ServerResponse<T> implements Serializable {
         return data;
     }
 
+
+    /*
+    * 下面这些泛型方法，作用是根据传入的类型的不同，返回不同类型的ServerResponse
+    * */
     public static <T> ServerResponse<T> createBySuccess(){
         return new ServerResponse<T>(ResponseCode.SUCCESS.getCode(),ResponseCode.SUCCESS.getDesc());
     }

@@ -4,6 +4,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import com.mmall.common.ResponseCode;
 import com.mmall.common.ServerResponse;
 import com.mmall.dao.ShippingMapper;
 import com.mmall.pojo.Shipping;
@@ -24,6 +25,9 @@ public class ShippingService implements IShippingService {
     private ShippingMapper shippingMapper;
 
     public ServerResponse add(Integer userId, Shipping shipping){
+        if(shipping == null){
+            return ServerResponse.createByErrorCodeAndMessage(ResponseCode.ILLEGAL_ARUGMENT.getCode(), ResponseCode.ILLEGAL_ARUGMENT.getDesc());
+        }
         shipping.setUserId(userId);
         /**
          * 在xml里面的insert方法中有一个属性useGeneratedKeys，当useGeneratedKeys=true时执行完语句后会把ID返回给添加的对象
@@ -38,6 +42,9 @@ public class ShippingService implements IShippingService {
     }
 
     public ServerResponse update(Integer userId,Shipping shipping){
+        if(shipping == null){
+            return ServerResponse.createByErrorCodeAndMessage(ResponseCode.ILLEGAL_ARUGMENT.getCode(), ResponseCode.ILLEGAL_ARUGMENT.getDesc());
+        }
         shipping.setUserId(userId);
         int resultCount = shippingMapper.updateByUserId(shipping);
         if(resultCount > 0){
@@ -48,6 +55,9 @@ public class ShippingService implements IShippingService {
 
 
     public ServerResponse del(Integer userId, Integer shippingId){
+        if(shippingId == null){
+            return ServerResponse.createByErrorCodeAndMessage(ResponseCode.ILLEGAL_ARUGMENT.getCode(), ResponseCode.ILLEGAL_ARUGMENT.getDesc());
+        }
         int resultCount = shippingMapper.deleteByUserIdAndPrimaryKey(userId, shippingId);
         if(resultCount > 0){
             return ServerResponse.createBySuccessMessage("删除收货地址成功！");
@@ -56,6 +66,9 @@ public class ShippingService implements IShippingService {
     }
 
     public ServerResponse<Shipping> select(Integer userId, Integer shippingId){
+        if(shippingId == null){
+            return ServerResponse.createByErrorCodeAndMessage(ResponseCode.ILLEGAL_ARUGMENT.getCode(), ResponseCode.ILLEGAL_ARUGMENT.getDesc());
+        }
         Shipping shipping = shippingMapper.selectByUserIdAndPrimaryKey(userId, shippingId);
         if(shipping != null){
             return ServerResponse.createBySuccess(shipping);

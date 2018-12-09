@@ -59,7 +59,7 @@ public class ProductServiceImpl implements IProductService {
             }
         }else{
             //说明是要更新产品相关信息
-            int resultCount = productMapper.updateByPrimaryKey(product);
+            int resultCount = productMapper.updateByPrimaryKeySelective(product);
             if(resultCount > 0){
                 return ServerResponse.createBySuccessMessage("产品信息修改成功！");
             }else{
@@ -105,7 +105,7 @@ public class ProductServiceImpl implements IProductService {
         productDetailVo.setStock(product.getStock());
 
         //imageHost
-        String imageHost = PropertiesUtil.getProperty("ftp.server.http.prefix","ftp://192.168.230.128/");
+        String imageHost = PropertiesUtil.getProperty("ftp.server.http.prefix","ftp://173.82.153.147/img/");
         productDetailVo.setImageHost(imageHost);
         //parentCategoryId
         Category category = categoryMapper.selectByPrimaryKey(product.getCategoryId());
