@@ -105,7 +105,7 @@ public class ProductServiceImpl implements IProductService {
         productDetailVo.setStock(product.getStock());
 
         //imageHost
-        String imageHost = "img.immall.tk/";
+        String imageHost = "http://img.immall.tk/";
         productDetailVo.setImageHost(imageHost);
         //parentCategoryId
         Category category = categoryMapper.selectByPrimaryKey(product.getCategoryId());
