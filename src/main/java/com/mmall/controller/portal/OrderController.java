@@ -92,12 +92,12 @@ public class OrderController {
     @RequestMapping("pay.do")
     @ResponseBody
     public ServerResponse<Map> pay(HttpSession session, Long orderNo, HttpServletRequest request){
-        //该path用于记录生成的二维码图片的存储位置
-        String path = request.getServletContext().getRealPath("upload");
         User user = (User) session.getAttribute(Const.CURRENT_USER);
         if(user == null){
             return ServerResponse.createByErrorCodeAndMessage(ResponseCode.NEED_LOGIN.getCode(),ResponseCode.NEED_LOGIN.getDesc());
         }
+        //该path用于记录生成的二维码图片的存储位置
+        String path = request.getServletContext().getRealPath("upload");
         return iOrderService.pay(orderNo,user.getId(),path);
     }
 

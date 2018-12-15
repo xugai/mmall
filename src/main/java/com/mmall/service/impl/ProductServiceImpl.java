@@ -13,6 +13,7 @@ import com.mmall.pojo.Product;
 import com.mmall.service.ICategoryService;
 import com.mmall.service.IProductService;
 import com.mmall.utils.DateTimeUtil;
+import com.mmall.utils.PropertiesUtil;
 import com.mmall.vo.ProductDetailVo;
 import com.mmall.vo.ProductListVo;
 import org.apache.commons.lang3.StringUtils;
@@ -104,7 +105,7 @@ public class ProductServiceImpl implements IProductService {
         productDetailVo.setStock(product.getStock());
 
         //imageHost
-        String imageHost = "http://img.immall.tk/";
+        String imageHost = PropertiesUtil.getProperty("ftp.server.http.prefix", "http://img.immall.tk/");
         productDetailVo.setImageHost(imageHost);
         //parentCategoryId
         Category category = categoryMapper.selectByPrimaryKey(product.getCategoryId());
@@ -149,7 +150,7 @@ public class ProductServiceImpl implements IProductService {
         productListVo.setStatus(product.getStatus());
         productListVo.setSubtitle(product.getSubtitle());
 
-        productListVo.setImageHost("http://img.immall.tk/");
+        productListVo.setImageHost(PropertiesUtil.getProperty("ftp.server.http.prefix", "http://img.immall.tk/"));
         return productListVo;
     }
 
