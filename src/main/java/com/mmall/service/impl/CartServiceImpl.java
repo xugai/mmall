@@ -11,6 +11,7 @@ import com.mmall.pojo.Cart;
 import com.mmall.pojo.Product;
 import com.mmall.service.ICartService;
 import com.mmall.utils.BigDecimalUtil;
+import com.mmall.utils.PropertiesUtil;
 import com.mmall.vo.CartProductVo;
 import com.mmall.vo.CartVo;
 import org.apache.commons.lang3.StringUtils;
@@ -171,7 +172,7 @@ public class CartServiceImpl implements ICartService {
         cartVo.setCartProductVoList(cartProductVoList);
         cartVo.setCartTotalPrice(cartTotalPrice);
         cartVo.setAllChecked(this.isAllChecked(userId));
-        cartVo.setImageHost("http://img.immall.tk/");
+        cartVo.setImageHost(PropertiesUtil.getProperty("ftp.server.http.prefix", "http://img.immall.tk/"));
         return cartVo;
     }
 
