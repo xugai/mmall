@@ -32,7 +32,7 @@ public class CartController {
     public ServerResponse<CartVo> addCart(HttpServletRequest httpServletRequest, Integer count, Integer productId){
         String loginToken = CookieUtil.readLoginToken(httpServletRequest);
         if(StringUtil.isEmpty(loginToken)){
-            return ServerResponse.createByErrorMessage("请重新登录后再重试！");
+            return ServerResponse.createByErrorCodeAndMessage(ResponseCode.NEED_LOGIN.getCode(), "请登录后再重试！");
         }
         String userStr = ShardedRedisPoolUtil.get(loginToken);
         User user = JsonUtil.string2Obj(userStr, User.class);
@@ -47,7 +47,7 @@ public class CartController {
     public ServerResponse<CartVo> updateCart(HttpServletRequest httpServletRequest, Integer count, Integer productId){
         String loginToken = CookieUtil.readLoginToken(httpServletRequest);
         if(StringUtil.isEmpty(loginToken)){
-            return ServerResponse.createByErrorMessage("请重新登录后再重试！");
+            return ServerResponse.createByErrorCodeAndMessage(ResponseCode.NEED_LOGIN.getCode(), "请登录后再重试！");
         }
         String userStr = ShardedRedisPoolUtil.get(loginToken);
         User user = JsonUtil.string2Obj(userStr, User.class);
@@ -62,7 +62,7 @@ public class CartController {
     public ServerResponse<CartVo> deleteCart(HttpServletRequest httpServletRequest, String productIds){
         String loginToken = CookieUtil.readLoginToken(httpServletRequest);
         if(StringUtil.isEmpty(loginToken)){
-            return ServerResponse.createByErrorMessage("请重新登录后再重试！");
+            return ServerResponse.createByErrorCodeAndMessage(ResponseCode.NEED_LOGIN.getCode(), "请登录后再重试！");
         }
         String userStr = ShardedRedisPoolUtil.get(loginToken);
         User user = JsonUtil.string2Obj(userStr, User.class);
@@ -78,7 +78,7 @@ public class CartController {
     public ServerResponse<CartVo> list(HttpServletRequest httpServletRequest){
         String loginToken = CookieUtil.readLoginToken(httpServletRequest);
         if(StringUtil.isEmpty(loginToken)){
-            return ServerResponse.createByErrorMessage("请重新登录后再重试！");
+            return ServerResponse.createByErrorCodeAndMessage(ResponseCode.NEED_LOGIN.getCode(), "请登录后再重试！");
         }
         String userStr = ShardedRedisPoolUtil.get(loginToken);
         User user = JsonUtil.string2Obj(userStr, User.class);
@@ -93,7 +93,7 @@ public class CartController {
     public ServerResponse<CartVo> selectAll(HttpServletRequest httpServletRequest){
         String loginToken = CookieUtil.readLoginToken(httpServletRequest);
         if(StringUtil.isEmpty(loginToken)){
-            return ServerResponse.createByErrorMessage("请重新登录后再重试！");
+            return ServerResponse.createByErrorCodeAndMessage(ResponseCode.NEED_LOGIN.getCode(), "请登录后再重试！");
         }
         String userStr = ShardedRedisPoolUtil.get(loginToken);
         User user = JsonUtil.string2Obj(userStr, User.class);
@@ -108,7 +108,7 @@ public class CartController {
     public ServerResponse<CartVo> unSelectAll(HttpServletRequest httpServletRequest){
         String loginToken = CookieUtil.readLoginToken(httpServletRequest);
         if(StringUtil.isEmpty(loginToken)){
-            return ServerResponse.createByErrorMessage("请重新登录后再重试！");
+            return ServerResponse.createByErrorCodeAndMessage(ResponseCode.NEED_LOGIN.getCode(), "请登录后再重试！");
         }
         String userStr = ShardedRedisPoolUtil.get(loginToken);
         User user = JsonUtil.string2Obj(userStr, User.class);
@@ -123,7 +123,7 @@ public class CartController {
     public ServerResponse<CartVo> select(HttpServletRequest httpServletRequest,Integer productId){
         String loginToken = CookieUtil.readLoginToken(httpServletRequest);
         if(StringUtil.isEmpty(loginToken)){
-            return ServerResponse.createByErrorMessage("请重新登录后再重试！");
+            return ServerResponse.createByErrorCodeAndMessage(ResponseCode.NEED_LOGIN.getCode(), "请登录后再重试！");
         }
         String userStr = ShardedRedisPoolUtil.get(loginToken);
         User user = JsonUtil.string2Obj(userStr, User.class);
@@ -138,7 +138,7 @@ public class CartController {
     public ServerResponse<CartVo> unSelect(HttpServletRequest httpServletRequest,Integer productId){
         String loginToken = CookieUtil.readLoginToken(httpServletRequest);
         if(StringUtil.isEmpty(loginToken)){
-            return ServerResponse.createByErrorMessage("请重新登录后再重试！");
+            return ServerResponse.createByErrorCodeAndMessage(ResponseCode.NEED_LOGIN.getCode(), "请登录后再重试！");
         }
         String userStr = ShardedRedisPoolUtil.get(loginToken);
         User user = JsonUtil.string2Obj(userStr, User.class);
@@ -153,7 +153,7 @@ public class CartController {
     public ServerResponse<Integer> selectCartProductCount(HttpServletRequest httpServletRequest){
         String loginToken = CookieUtil.readLoginToken(httpServletRequest);
         if(StringUtil.isEmpty(loginToken)){
-            return ServerResponse.createByErrorMessage("请重新登录后再重试！");
+            return ServerResponse.createBySuccess(0);
         }
         String userStr = ShardedRedisPoolUtil.get(loginToken);
         User user = JsonUtil.string2Obj(userStr, User.class);

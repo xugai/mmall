@@ -74,12 +74,12 @@ public class UserController {
     public ServerResponse<User> getUserInfo(HttpServletRequest httpServletRequest){
         String loginToken = CookieUtil.readLoginToken(httpServletRequest);
         if(StringUtil.isEmpty(loginToken)){
-            return ServerResponse.createByErrorMessage("请重新登录后再重试！");
+            return ServerResponse.createByErrorCodeAndMessage(ResponseCode.NEED_LOGIN.getCode(), "请登录后再重试！");
         }
         String userStr = ShardedRedisPoolUtil.get(loginToken);
         User user = JsonUtil.string2Obj(userStr, User.class);
         if(user == null){
-            return ServerResponse.createByError();
+            return ServerResponse.createByErrorCodeAndMessage(ResponseCode.NEED_LOGIN.getCode(), "请登录后再重试！");
         }
         return ServerResponse.createBySuccess(user);
     }
@@ -108,12 +108,12 @@ public class UserController {
 //        User user =(User) session.getAttribute(Const.CURRENT_USER);
         String loginToken = CookieUtil.readLoginToken(httpServletRequest);
         if(StringUtil.isEmpty(loginToken)){
-            return ServerResponse.createByErrorMessage("未登录的用户,请登录后重试！");
+            return ServerResponse.createByErrorCodeAndMessage(ResponseCode.NEED_LOGIN.getCode(), "请登录后再重试！");
         }
         String userStr = ShardedRedisPoolUtil.get(loginToken);
         User user = JsonUtil.string2Obj(userStr, User.class);
         if(user == null){
-            return ServerResponse.createByErrorMessage("未登录的用户,请登录后重试！");
+            return ServerResponse.createByErrorCodeAndMessage(ResponseCode.NEED_LOGIN.getCode(), "请登录后再重试！");
         }
         return iUserService.resetPassword(user,passwordOld,passwordNew);
     }
@@ -123,12 +123,12 @@ public class UserController {
     public ServerResponse<User> updateInformation(HttpServletRequest httpServletRequest,User user){
         String loginToken = CookieUtil.readLoginToken(httpServletRequest);
         if(StringUtil.isEmpty(loginToken)){
-            return ServerResponse.createByErrorMessage("请重新登录后再重试！");
+            return ServerResponse.createByErrorCodeAndMessage(ResponseCode.NEED_LOGIN.getCode(), "请登录后再重试！");
         }
         String userStr = ShardedRedisPoolUtil.get(loginToken);
         User currentUser = JsonUtil.string2Obj(userStr, User.class);
         if(currentUser == null){
-            return ServerResponse.createByErrorMessage("未登录的用户,请登录后重试！");
+            return ServerResponse.createByErrorCodeAndMessage(ResponseCode.NEED_LOGIN.getCode(), "请登录后再重试！");
         }
         user.setId(currentUser.getId());
         ServerResponse<User> response = iUserService.updateInformation(user);
@@ -144,12 +144,12 @@ public class UserController {
     public ServerResponse<User> getInformation(HttpServletRequest httpServletRequest){
         String loginToken = CookieUtil.readLoginToken(httpServletRequest);
         if(StringUtil.isEmpty(loginToken)){
-            return ServerResponse.createByErrorMessage("请重新登录后再重试！");
+            return ServerResponse.createByErrorCodeAndMessage(ResponseCode.NEED_LOGIN.getCode(), "请登录后再重试！");
         }
         String userStr = ShardedRedisPoolUtil.get(loginToken);
         User user = JsonUtil.string2Obj(userStr, User.class);
         if(user == null){
-            return ServerResponse.createByErrorCodeAndMessage(ResponseCode.NEED_LOGIN.getCode(),"用户未登录,无法获取当前用户信息,status=10,强制登录！");
+            return ServerResponse.createByErrorCodeAndMessage(ResponseCode.NEED_LOGIN.getCode(), "请登录后再重试！");
         }
         return iUserService.getInformation(user.getId());
     }
