@@ -27,10 +27,10 @@ import com.mmall.vo.OrderItemVo;
 import com.mmall.vo.OrderProductVo;
 import com.mmall.vo.OrderVo;
 import com.mmall.vo.ShippingVo;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -43,6 +43,7 @@ import java.util.*;
  * Created by rabbit on 2018/2/17.
  */
 @Service("iOrderService")
+@Slf4j
 public class OrderServiceImpl implements IOrderService {
 
     @Autowired
@@ -63,7 +64,7 @@ public class OrderServiceImpl implements IOrderService {
     @Autowired
     private ShippingMapper shippingMapper;
 
-    private Logger logger = LoggerFactory.getLogger(OrderServiceImpl.class);
+//    private Logger log = LoggerFactory.getLogger(OrderServiceImpl.class);
 
     private AlipayTradeService tradeService;
 
@@ -412,7 +413,7 @@ public class OrderServiceImpl implements IOrderService {
 
         switch (result.getTradeStatus()) {
             case SUCCESS:
-                logger.info("支付宝预下单成功: )");
+                log.info("支付宝预下单成功: )");
 
                 AlipayTradePrecreateResponse response = result.getResponse();
                 dumpResponse(response);
@@ -433,38 +434,38 @@ public class OrderServiceImpl implements IOrderService {
                 try {
                     FTPUtil.uploadFile(Lists.newArrayList(targetFile));
                 } catch (IOException ex) {
-                    logger.error("二维码图片上传异常！");
+                    log.error("二维码图片上传异常！");
                 }
 
-                logger.info("qrPath:" + qrPath);
+                log.info("qrPath:" + qrPath);
                 String qrUrl = PropertiesUtil.getProperty("ftp.server.http.prefix", "http://img.immall.tk/") + targetFile.getName();
                 map.put("qrPath", qrUrl);
                 return ServerResponse.createBySuccess(map);
 
             case FAILED:
-                logger.error("支付宝预下单失败!!!");
+                log.error("支付宝预下单失败!!!");
                 return ServerResponse.createByErrorMessage("支付宝预下单失败!!!");
 
 
             case UNKNOWN:
-                logger.error("系统异常，预下单状态未知!!!");
+                log.error("系统异常，预下单状态未知!!!");
                 return ServerResponse.createByErrorMessage("系统异常，预下单状态未知!!!");
 
 
             default:
-                logger.error("不支持的交易状态，交易返回异常!!!");
+                log.error("不支持的交易状态，交易返回异常!!!");
                 return ServerResponse.createByErrorMessage("不支持的交易状态，交易返回异常!!!");
         }
     }
     // 简单打印应答
     private void dumpResponse(AlipayResponse response) {
         if (response != null) {
-            logger.info(String.format("code:%s, msg:%s", response.getCode(), response.getMsg()));
+            log.info(String.format("code:%s, msg:%s", response.getCode(), response.getMsg()));
             if (StringUtils.isNotEmpty(response.getSubCode())) {
-                logger.info(String.format("subCode:%s, subMsg:%s", response.getSubCode(),
+                log.info(String.format("subCode:%s, subMsg:%s", response.getSubCode(),
                         response.getSubMsg()));
             }
-            logger.info("body:" + response.getBody());
+            log.info("body:" + response.getBody());
         }
     }
 
@@ -525,7 +526,7 @@ public class OrderServiceImpl implements IOrderService {
      * 以下是后端(backend)管理员服务实现
      */
 
-    public ServerResponse<PageInfo> manageOrderList(Integer userId,Integer pageNum,Integer pageSize){
+    public ServerResponse<PageInfo> manageOrderList(Integer pageNum,Integer pageSize){
         PageHelper.startPage(pageNum,pageSize);
         List<Order> orderList = orderMapper.selectAllOrder();
         List<OrderVo> orderVoLIst = this.assembleOrderVoList(orderList,null);
@@ -570,6 +571,32 @@ public class OrderServiceImpl implements IOrderService {
             return ServerResponse.createBySuccessMessage("发货成功！");
         }
         return ServerResponse.createByErrorMessage("修改订单为发货状态失败！");
+    }
+
+    @Override
+    public void closeOrder(int hour) {
+        Date createTime = DateUtils.addHours(new Date(), -hour);
+        List<Order> orderList = orderMapper.selectOrderStatusByCreateTime(Const.OrderStatusEnum.NO_PAY.getCode(),
+                                            DateTimeUtil.dateToStr(createTime));
+        if(orderList.size() > 0){
+            for(Order order: orderList){
+                List<OrderItem> orderItemList = orderItemMapper.selectByUserIdAndOrderNo(null, order.getOrderNo());
+                for(OrderItem orderItem: orderItemList){
+                    // 切记要使用主键id作为查询条件,防止锁表.
+                    Integer stock = productMapper.getStockByProductId(orderItem.getProductId());
+                    // 若 stock 为空,则说明该商品已经被删除了.继续下一个商品的库存查询
+                    if(stock == null){
+                        continue;
+                    }
+                    Product product = new Product();
+                    product.setId(orderItem.getProductId());
+                    product.setStock(stock + orderItem.getQuantity());
+                    productMapper.updateByPrimaryKeySelective(product);
+                }
+                orderMapper.closeOrderByOrderNo(order.getOrderNo());
+                log.info("关闭订单号为: {} 的订单.", order.getOrderNo());
+            }
+        }
     }
 
 }

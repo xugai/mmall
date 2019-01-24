@@ -2,11 +2,11 @@ package com.mmall.service.impl;
 
 import com.mmall.common.Const;
 import com.mmall.common.ServerResponse;
-import com.mmall.common.TokenCache;
 import com.mmall.dao.UserMapper;
 import com.mmall.pojo.User;
 import com.mmall.service.IUserService;
 import com.mmall.utils.MD5Util;
+import com.mmall.utils.ShardedRedisPoolUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -93,7 +93,7 @@ public class UserServiceImpl implements IUserService {
             //进入该分支，说明该用户的该问题的答案是正确的
             //传入token给下一个重置密码页面，用于防止横向越权以及确定修改密码的有效操作期限
             String forgetToken = UUID.randomUUID().toString();
-            TokenCache.setKey(TokenCache.TOKEN_PREFIX+username,forgetToken);
+            ShardedRedisPoolUtil.setex(Const.TOKEN_PREFIX + username, Const.RedisCacheExTime.REDIS_FORGET_TOKEN_CACHE_TIME, forgetToken);
             return ServerResponse.createBySuccess(forgetToken);
         }
         return ServerResponse.createByErrorMessage("您提交的答案是错误的！");
@@ -106,7 +106,7 @@ public class UserServiceImpl implements IUserService {
         if(org.apache.commons.lang3.StringUtils.isBlank(forgetToken)){
             return ServerResponse.createByErrorMessage("请求的参数错误,token需要传递！");
         }
-        String token = TokenCache.getKey(TokenCache.TOKEN_PREFIX+username);
+        String token = ShardedRedisPoolUtil.get(Const.TOKEN_PREFIX + username);
         if(org.apache.commons.lang3.StringUtils.isBlank(token)){
             return ServerResponse.createByErrorMessage("token无效或者过期！");
         }

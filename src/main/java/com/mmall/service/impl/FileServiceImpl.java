@@ -3,8 +3,7 @@ package com.mmall.service.impl;
 import com.google.common.collect.Lists;
 import com.mmall.service.IFileService;
 import com.mmall.utils.FTPUtil;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -15,10 +14,11 @@ import java.util.UUID;
  * Created by rabbit on 2018/2/11.
  */
 @Service("iFileService")
+@Slf4j
 public class FileServiceImpl implements IFileService {
 
 
-    private static final Logger logger = LoggerFactory.getLogger(FileServiceImpl.class);
+//    private static final Logger log = LoggerFactory.getLogger(FileServiceImpl.class);
 
 
     public String upload(MultipartFile file,String path){
@@ -31,7 +31,7 @@ public class FileServiceImpl implements IFileService {
         //获取上传文件的扩展名，类似.jpg或者.jpeg,但我们只要扩展名，不需要扩展名前的小数点
         String fileExtensionName = fileName.substring(fileName.lastIndexOf(".") + 1);
         String uploadFileName = UUID.randomUUID().toString()+"."+fileExtensionName;
-        logger.info("开始上传文件,上传文件的文件名{},上传路径{},新文件名{}",fileName,path,uploadFileName);
+        log.info("开始上传文件,上传文件的文件名{},上传路径{},新文件名{}",fileName,path,uploadFileName);
 
         //在当前路径下创建一个目录，有则覆盖，否则新建
         File fileDir = new File(path);
@@ -56,7 +56,7 @@ public class FileServiceImpl implements IFileService {
                 throw new Exception();
             }
         }catch(Exception ex){
-            logger.error("上传文件异常！",ex);
+            log.error("上传文件异常！",ex);
             return null;
         }
         return targetFile.getName();

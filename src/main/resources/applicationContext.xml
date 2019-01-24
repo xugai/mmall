@@ -3,23 +3,33 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
        xmlns:tx="http://www.springframework.org/schema/tx" xmlns:jdbc="http://www.springframework.org/schema/jdbc"
        xmlns:context="http://www.springframework.org/schema/context"
-       xsi:schemaLocation="
-     http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+       xmlns:task="http://www.springframework.org/schema/task"
+       xsi:schemaLocation="http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
      http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
      http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
-     http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
+     http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task.xsd">
 
-    <context:component-scan base-package="com.mmall" annotation-config="true"/>
+    <!--
+        规定把 controller 都交由 spring MVC 去扫描处理，在 spring ioc 容器中不去扫描注册实例化注解声明为 controller 的类
+    -->
+    <context:component-scan base-package="com.mmall" annotation-config="true">
+        <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller" />
+    </context:component-scan>
 
-    <!--<context:annotation-config/>-->
     <!--
         通过aop命名空间的<aop:aspectj-autoproxy
         />声明自动为spring容器中那些配置@aspectJ切面的bean创建代理，织入切面。
     -->
     <aop:aspectj-autoproxy/>
 
+    <!--
+        开启 spring schedule 基于注解的配置
+    -->
+    <task:annotation-driven />
+
 
     <import resource="applicationContext-datasource.xml"/>
+    <!--<import resource="applicationContext-spring-session.xml"/>-->
 
 
 </beans>
