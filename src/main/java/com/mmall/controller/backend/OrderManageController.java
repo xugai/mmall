@@ -126,9 +126,4 @@ public class OrderManageController {
     }
 
 
-
-
-
-    //detail,search,send
-
 }

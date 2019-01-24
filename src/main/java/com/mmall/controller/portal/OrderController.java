@@ -44,7 +44,7 @@ public class OrderController {
     public ServerResponse create(HttpServletRequest httpServletRequest,Integer shippingId){
         String loginToken = CookieUtil.readLoginToken(httpServletRequest);
         if(StringUtil.isEmpty(loginToken)){
-            return ServerResponse.createByErrorMessage("请重新登录后再重试！");
+            return ServerResponse.createByErrorCodeAndMessage(ResponseCode.NEED_LOGIN.getCode(), "请登录后再重试！");
         }
         String userStr = ShardedRedisPoolUtil.get(loginToken);
         User user = JsonUtil.string2Obj(userStr, User.class);
@@ -59,7 +59,7 @@ public class OrderController {
     public ServerResponse cancel(HttpServletRequest httpServletRequest,Long orderNo){
         String loginToken = CookieUtil.readLoginToken(httpServletRequest);
         if(StringUtil.isEmpty(loginToken)){
-            return ServerResponse.createByErrorMessage("请重新登录后再重试！");
+            return ServerResponse.createByErrorCodeAndMessage(ResponseCode.NEED_LOGIN.getCode(), "请登录后再重试！");
         }
         String userStr = ShardedRedisPoolUtil.get(loginToken);
         User user = JsonUtil.string2Obj(userStr, User.class);
@@ -75,7 +75,7 @@ public class OrderController {
     public ServerResponse getOrderCartProduct(HttpServletRequest httpServletRequest){
         String loginToken = CookieUtil.readLoginToken(httpServletRequest);
         if(StringUtil.isEmpty(loginToken)){
-            return ServerResponse.createByErrorMessage("请重新登录后再重试！");
+            return ServerResponse.createByErrorCodeAndMessage(ResponseCode.NEED_LOGIN.getCode(), "请登录后再重试！");
         }
         String userStr = ShardedRedisPoolUtil.get(loginToken);
         User user = JsonUtil.string2Obj(userStr, User.class);
@@ -91,7 +91,7 @@ public class OrderController {
                                          @RequestParam(value="pageSize",defaultValue = "10") Integer pageSize){
         String loginToken = CookieUtil.readLoginToken(httpServletRequest);
         if(StringUtil.isEmpty(loginToken)){
-            return ServerResponse.createByErrorMessage("请重新登录后再重试！");
+            return ServerResponse.createByErrorCodeAndMessage(ResponseCode.NEED_LOGIN.getCode(), "请登录后再重试！");
         }
         String userStr = ShardedRedisPoolUtil.get(loginToken);
         User user = JsonUtil.string2Obj(userStr, User.class);
@@ -106,7 +106,7 @@ public class OrderController {
     public ServerResponse getOrderDetail(HttpServletRequest httpServletRequest,Long orderNo){
         String loginToken = CookieUtil.readLoginToken(httpServletRequest);
         if(StringUtil.isEmpty(loginToken)){
-            return ServerResponse.createByErrorMessage("请重新登录后再重试！");
+            return ServerResponse.createByErrorCodeAndMessage(ResponseCode.NEED_LOGIN.getCode(), "请登录后再重试！");
         }
         String userStr = ShardedRedisPoolUtil.get(loginToken);
         User user = JsonUtil.string2Obj(userStr, User.class);
@@ -122,7 +122,7 @@ public class OrderController {
     public ServerResponse<Map> pay(HttpServletRequest httpServletRequest, Long orderNo, HttpServletRequest request){
         String loginToken = CookieUtil.readLoginToken(httpServletRequest);
         if(StringUtil.isEmpty(loginToken)){
-            return ServerResponse.createByErrorMessage("请重新登录后再重试！");
+            return ServerResponse.createByErrorCodeAndMessage(ResponseCode.NEED_LOGIN.getCode(), "请登录后再重试！");
         }
         String userStr = ShardedRedisPoolUtil.get(loginToken);
         User user = JsonUtil.string2Obj(userStr, User.class);
@@ -179,7 +179,7 @@ public class OrderController {
     public ServerResponse<Boolean> queryOrderpayStatus(HttpServletRequest httpServletRequest,Long orderNo){
         String loginToken = CookieUtil.readLoginToken(httpServletRequest);
         if(StringUtil.isEmpty(loginToken)){
-            return ServerResponse.createByErrorMessage("请重新登录后再重试！");
+            return ServerResponse.createByErrorCodeAndMessage(ResponseCode.NEED_LOGIN.getCode(), "请登录后再重试！");
         }
         String userStr = ShardedRedisPoolUtil.get(loginToken);
         User user = JsonUtil.string2Obj(userStr, User.class);

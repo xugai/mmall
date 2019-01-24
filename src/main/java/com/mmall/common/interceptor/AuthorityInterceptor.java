@@ -3,6 +3,7 @@ package com.mmall.common.interceptor;
 import com.github.pagehelper.StringUtil;
 import com.google.common.collect.Maps;
 import com.mmall.common.Const;
+import com.mmall.common.ResponseCode;
 import com.mmall.common.ServerResponse;
 import com.mmall.pojo.User;
 import com.mmall.utils.CookieUtil;
@@ -76,7 +77,7 @@ public class AuthorityInterceptor implements HandlerInterceptor {
                     resultMap.put("msg", "请使用管理员身份登录后再操作！");
                     out.print(JsonUtil.obj2String(resultMap));
                 }else {
-                    out.print(JsonUtil.obj2String(ServerResponse.createByErrorMessage("拦截器拦截，用户未登录！")));
+                    out.print(JsonUtil.obj2String(ServerResponse.createByErrorCodeAndMessage(ResponseCode.NEED_LOGIN.getCode(), "拦截器拦截,请使用管理员身份进行登录!")));
                 }
             }else{
                 if(StringUtils.equals("ProductManageController", beanName) && StringUtils.equals("richtextImgUpload", handleMethodName)) {
@@ -85,7 +86,7 @@ public class AuthorityInterceptor implements HandlerInterceptor {
                     resultMap.put("msg", "无权限操作！");
                     out.print(JsonUtil.obj2String(resultMap));
                 }else {
-                    out.print(JsonUtil.obj2String(ServerResponse.createByErrorMessage("拦截器拦截，请使用管理员角色进行登录！")));
+                    out.print(JsonUtil.obj2String(ServerResponse.createByErrorCodeAndMessage(ResponseCode.NEED_LOGIN.getCode(), "拦截器拦截,请使用管理员身份进行登录!")));
                 }
             }
             out.flush();

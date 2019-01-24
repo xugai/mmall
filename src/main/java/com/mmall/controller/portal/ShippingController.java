@@ -34,7 +34,7 @@ public class ShippingController {
     public ServerResponse add(HttpServletRequest httpServletRequest, Shipping shipping){
         String loginToken = CookieUtil.readLoginToken(httpServletRequest);
         if(StringUtil.isEmpty(loginToken)){
-            return ServerResponse.createByErrorMessage("请重新登录后再重试！");
+            return ServerResponse.createByErrorCodeAndMessage(ResponseCode.NEED_LOGIN.getCode(), "请登录后再重试！");
         }
         String userStr = ShardedRedisPoolUtil.get(loginToken);
         User user = JsonUtil.string2Obj(userStr, User.class);
@@ -49,7 +49,7 @@ public class ShippingController {
     public ServerResponse update(HttpServletRequest httpServletRequest,Shipping shipping){
         String loginToken = CookieUtil.readLoginToken(httpServletRequest);
         if(StringUtil.isEmpty(loginToken)){
-            return ServerResponse.createByErrorMessage("请重新登录后再重试！");
+            return ServerResponse.createByErrorCodeAndMessage(ResponseCode.NEED_LOGIN.getCode(), "请登录后再重试！");
         }
         String userStr = ShardedRedisPoolUtil.get(loginToken);
         User user = JsonUtil.string2Obj(userStr, User.class);
@@ -65,7 +65,7 @@ public class ShippingController {
     public ServerResponse del(HttpServletRequest httpServletRequest,Integer shippingId){
         String loginToken = CookieUtil.readLoginToken(httpServletRequest);
         if(StringUtil.isEmpty(loginToken)){
-            return ServerResponse.createByErrorMessage("请重新登录后再重试！");
+            return ServerResponse.createByErrorCodeAndMessage(ResponseCode.NEED_LOGIN.getCode(), "请登录后再重试！");
         }
         String userStr = ShardedRedisPoolUtil.get(loginToken);
         User user = JsonUtil.string2Obj(userStr, User.class);
@@ -80,7 +80,7 @@ public class ShippingController {
     public ServerResponse<Shipping> select(HttpServletRequest httpServletRequest,Integer shippingId){
         String loginToken = CookieUtil.readLoginToken(httpServletRequest);
         if(StringUtil.isEmpty(loginToken)){
-            return ServerResponse.createByErrorMessage("请重新登录后再重试！");
+            return ServerResponse.createByErrorCodeAndMessage(ResponseCode.NEED_LOGIN.getCode(), "请登录后再重试！");
         }
         String userStr = ShardedRedisPoolUtil.get(loginToken);
         User user = JsonUtil.string2Obj(userStr, User.class);
@@ -97,7 +97,7 @@ public class ShippingController {
                                          @RequestParam(value="pageSize",defaultValue = "10") Integer pageSize){
         String loginToken = CookieUtil.readLoginToken(httpServletRequest);
         if(StringUtil.isEmpty(loginToken)){
-            return ServerResponse.createByErrorMessage("请重新登录后再重试！");
+            return ServerResponse.createByErrorCodeAndMessage(ResponseCode.NEED_LOGIN.getCode(), "请登录后再重试！");
         }
         String userStr = ShardedRedisPoolUtil.get(loginToken);
         User user = JsonUtil.string2Obj(userStr, User.class);
