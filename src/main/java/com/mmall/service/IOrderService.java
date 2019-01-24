@@ -28,7 +28,7 @@ public interface IOrderService {
 
     ServerResponse<PageInfo> list(Integer userId, Integer pageNum, Integer pageSize);
 
-    ServerResponse<PageInfo> manageOrderList(Integer userId,Integer pageNum,Integer pageSize);
+    ServerResponse<PageInfo> manageOrderList(Integer pageNum,Integer pageSize);
 
     //管理员使用
     ServerResponse<OrderVo> getOrderDetail(Long orderNo);
@@ -36,4 +36,6 @@ public interface IOrderService {
     ServerResponse<PageInfo> searchOrder(Long orderNo,Integer pageNum,Integer pageSize);
 
     ServerResponse sendOrderGoods(Long orderNo);
+
+    void closeOrder(int hour);
 }

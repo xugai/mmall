@@ -4,12 +4,16 @@ import com.alipay.api.AlipayApiException;
 import com.alipay.api.internal.util.AlipaySignature;
 import com.alipay.demo.trade.config.Configs;
 import com.github.pagehelper.PageInfo;
+import com.github.pagehelper.StringUtil;
 import com.google.common.collect.Maps;
 import com.mmall.common.Const;
 import com.mmall.common.ResponseCode;
 import com.mmall.common.ServerResponse;
 import com.mmall.pojo.User;
 import com.mmall.service.IOrderService;
+import com.mmall.utils.CookieUtil;
+import com.mmall.utils.JsonUtil;
+import com.mmall.utils.ShardedRedisPoolUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +23,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import java.util.Iterator;
 import java.util.Map;
 
@@ -38,8 +41,13 @@ public class OrderController {
 
     @RequestMapping("create.do")
     @ResponseBody
-    public ServerResponse create(HttpSession session,Integer shippingId){
-        User user = (User) session.getAttribute(Const.CURRENT_USER);
+    public ServerResponse create(HttpServletRequest httpServletRequest,Integer shippingId){
+        String loginToken = CookieUtil.readLoginToken(httpServletRequest);
+        if(StringUtil.isEmpty(loginToken)){
+            return ServerResponse.createByErrorMessage("请重新登录后再重试！");
+        }
+        String userStr = ShardedRedisPoolUtil.get(loginToken);
+        User user = JsonUtil.string2Obj(userStr, User.class);
         if(user == null){
             return ServerResponse.createByErrorCodeAndMessage(ResponseCode.NEED_LOGIN.getCode(),ResponseCode.NEED_LOGIN.getDesc());
         }
@@ -48,8 +56,13 @@ public class OrderController {
 
     @RequestMapping("cancel.do")
     @ResponseBody
-    public ServerResponse cancel(HttpSession session,Long orderNo){
-        User user = (User) session.getAttribute(Const.CURRENT_USER);
+    public ServerResponse cancel(HttpServletRequest httpServletRequest,Long orderNo){
+        String loginToken = CookieUtil.readLoginToken(httpServletRequest);
+        if(StringUtil.isEmpty(loginToken)){
+            return ServerResponse.createByErrorMessage("请重新登录后再重试！");
+        }
+        String userStr = ShardedRedisPoolUtil.get(loginToken);
+        User user = JsonUtil.string2Obj(userStr, User.class);
         if(user == null){
             return ServerResponse.createByErrorCodeAndMessage(ResponseCode.NEED_LOGIN.getCode(),ResponseCode.NEED_LOGIN.getDesc());
         }
@@ -59,8 +72,13 @@ public class OrderController {
 
     @RequestMapping("get_order_cart_product.do")
     @ResponseBody
-    public ServerResponse getOrderCartProduct(HttpSession session){
-        User user = (User) session.getAttribute(Const.CURRENT_USER);
+    public ServerResponse getOrderCartProduct(HttpServletRequest httpServletRequest){
+        String loginToken = CookieUtil.readLoginToken(httpServletRequest);
+        if(StringUtil.isEmpty(loginToken)){
+            return ServerResponse.createByErrorMessage("请重新登录后再重试！");
+        }
+        String userStr = ShardedRedisPoolUtil.get(loginToken);
+        User user = JsonUtil.string2Obj(userStr, User.class);
         if(user == null){
             return ServerResponse.createByErrorCodeAndMessage(ResponseCode.NEED_LOGIN.getCode(),ResponseCode.NEED_LOGIN.getDesc());
         }
@@ -69,9 +87,14 @@ public class OrderController {
 
     @RequestMapping("list.do")
     @ResponseBody
-    public ServerResponse<PageInfo> list(HttpSession session, @RequestParam(value="pageNum",defaultValue = "1") Integer pageNum,
+    public ServerResponse<PageInfo> list(HttpServletRequest httpServletRequest, @RequestParam(value="pageNum",defaultValue = "1") Integer pageNum,
                                          @RequestParam(value="pageSize",defaultValue = "10") Integer pageSize){
-        User user = (User) session.getAttribute(Const.CURRENT_USER);
+        String loginToken = CookieUtil.readLoginToken(httpServletRequest);
+        if(StringUtil.isEmpty(loginToken)){
+            return ServerResponse.createByErrorMessage("请重新登录后再重试！");
+        }
+        String userStr = ShardedRedisPoolUtil.get(loginToken);
+        User user = JsonUtil.string2Obj(userStr, User.class);
         if(user == null){
             return ServerResponse.createByErrorCodeAndMessage(ResponseCode.NEED_LOGIN.getCode(),ResponseCode.NEED_LOGIN.getDesc());
         }
@@ -80,8 +103,13 @@ public class OrderController {
 
     @RequestMapping("detail.do")
     @ResponseBody
-    public ServerResponse getOrderDetail(HttpSession session,Long orderNo){
-        User user = (User) session.getAttribute(Const.CURRENT_USER);
+    public ServerResponse getOrderDetail(HttpServletRequest httpServletRequest,Long orderNo){
+        String loginToken = CookieUtil.readLoginToken(httpServletRequest);
+        if(StringUtil.isEmpty(loginToken)){
+            return ServerResponse.createByErrorMessage("请重新登录后再重试！");
+        }
+        String userStr = ShardedRedisPoolUtil.get(loginToken);
+        User user = JsonUtil.string2Obj(userStr, User.class);
         if(user == null){
             return ServerResponse.createByErrorCodeAndMessage(ResponseCode.NEED_LOGIN.getCode(),ResponseCode.NEED_LOGIN.getDesc());
         }
@@ -91,8 +119,13 @@ public class OrderController {
 
     @RequestMapping("pay.do")
     @ResponseBody
-    public ServerResponse<Map> pay(HttpSession session, Long orderNo, HttpServletRequest request){
-        User user = (User) session.getAttribute(Const.CURRENT_USER);
+    public ServerResponse<Map> pay(HttpServletRequest httpServletRequest, Long orderNo, HttpServletRequest request){
+        String loginToken = CookieUtil.readLoginToken(httpServletRequest);
+        if(StringUtil.isEmpty(loginToken)){
+            return ServerResponse.createByErrorMessage("请重新登录后再重试！");
+        }
+        String userStr = ShardedRedisPoolUtil.get(loginToken);
+        User user = JsonUtil.string2Obj(userStr, User.class);
         if(user == null){
             return ServerResponse.createByErrorCodeAndMessage(ResponseCode.NEED_LOGIN.getCode(),ResponseCode.NEED_LOGIN.getDesc());
         }
@@ -143,8 +176,13 @@ public class OrderController {
 
     @RequestMapping("query_order_pay_status.do")
     @ResponseBody
-    public ServerResponse<Boolean> queryOrderpayStatus(HttpSession session,Long orderNo){
-        User user = (User) session.getAttribute(Const.CURRENT_USER);
+    public ServerResponse<Boolean> queryOrderpayStatus(HttpServletRequest httpServletRequest,Long orderNo){
+        String loginToken = CookieUtil.readLoginToken(httpServletRequest);
+        if(StringUtil.isEmpty(loginToken)){
+            return ServerResponse.createByErrorMessage("请重新登录后再重试！");
+        }
+        String userStr = ShardedRedisPoolUtil.get(loginToken);
+        User user = JsonUtil.string2Obj(userStr, User.class);
         if(user == null){
             return ServerResponse.createByErrorCodeAndMessage(ResponseCode.NEED_LOGIN.getCode(),ResponseCode.NEED_LOGIN.getDesc());
         }

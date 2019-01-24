@@ -14,7 +14,7 @@ public class DateTimeUtil {
 
     //joda-time
 
-    private static final String STANTARD_FORMAT = "yyyy-MM-dd HH:mm:ss";
+    public static final String STANTARD_FORMAT = "yyyy-MM-dd HH:mm:ss";
     //str->Date
     public static Date strToDate(String dateTimeStr, String formateStr){
         DateTimeFormatter dateTimeFormatter = DateTimeFormat.forPattern(formateStr);

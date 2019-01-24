@@ -56,12 +56,42 @@
     <load-on-startup>1</load-on-startup>
   </servlet>
 
-
-
-  <servlet-mapping>
+  <!--<servlet-mapping>
     <servlet-name>dispatcher</servlet-name>
     <url-pattern>*.do</url-pattern>
+  </servlet-mapping>-->
+
+  <!-- 拦截所有请求,便于后面的商品模块使用RESTful风格的访问URL -->
+  <servlet-mapping>
+    <servlet-name>dispatcher</servlet-name>
+    <url-pattern>/</url-pattern>
   </servlet-mapping>
+
+  <!--
+      原生的会话时间有效期重置过滤器
+  -->
+  <filter>
+    <filter-name>SessionExpireFilter</filter-name>
+    <filter-class>com.mmall.controller.common.SessionExpireFilter</filter-class>
+  </filter>
+
+  <filter-mapping>
+    <filter-name>SessionExpireFilter</filter-name>
+    <url-pattern>*.do</url-pattern>
+  </filter-mapping>
+
+  <!--
+      spring session filter
+  -->
+  <!--<filter>-->
+    <!--<filter-name>springSessionRepositoryFilter</filter-name>-->
+    <!--<filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>-->
+  <!--</filter>-->
+
+  <!--<filter-mapping>-->
+    <!--<filter-name>springSessionRepositoryFilter</filter-name>-->
+    <!--<url-pattern>*.do</url-pattern>-->
+  <!--</filter-mapping>-->
 
 </web-app>
 

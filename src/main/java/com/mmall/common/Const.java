@@ -14,6 +14,14 @@ public class Const {
 
     public static final String EMAIL = "email";
 
+    public static final String TOKEN_PREFIX = "token_";
+
+    public interface RedisCacheExTime{
+        int REDIS_SESSION_EXTIME = 60 * 30;
+        int REDIS_SESSION_EXPIRED = -2;
+        int REDIS_FORGET_TOKEN_CACHE_TIME = 60 * 60 * 12;
+    }
+
     public interface productListOrderBy{
         /**
          * 为何使用Set集呢?
@@ -139,6 +147,10 @@ public class Const {
             }
             throw new RuntimeException("没有找到相对应的枚举！");
         }
+    }
+
+    public interface RedisKey{
+        String CLOSE_ORDER_TASK_LOCK = "CLOSE_ORDER_TASK_LOCK";
     }
 
 }

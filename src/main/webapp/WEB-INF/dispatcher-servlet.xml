@@ -8,7 +8,14 @@
 	http://www.springframework.org/schema/mvc
 	http://www.springframework.org/schema/mvc/spring-mvc.xsd">
 
-    <context:component-scan base-package="com.mmall" annotation-config="true"/>
+
+    <!--
+        规定让 spring MVC 只去扫描注册实例化 controller 声明的类，其他非 controller 注解声明的类都不注册实例化
+        使用 use-default-filters = false，是不让 spring IOC 容器的默认过滤器进行扫描注册实例化
+    -->
+    <context:component-scan base-package="com.mmall.controller" annotation-config="true" use-default-filters="false">
+        <context:include-filter type="annotation" expression="org.springframework.stereotype.Controller" />
+    </context:component-scan>
 
     <!--
         <mvc:annotation-driven>会自动注册RequestMappingHandlerMapping与RequestMappingHandlerAdapter两个Bean,
@@ -43,5 +50,17 @@
         <property name="defaultEncoding" value="UTF-8"></property>
     </bean>
 
+    <mvc:interceptors>
+        <!--定义在这里的 bean，所有的URL请求都会拦截-->
+        <mvc:interceptor>
+            <!-- /manage/a.do   /manage/*  只拦截manage下面的请求，若manage下面还有子路径，则不会拦截到-->
+            <!-- /manage/b.do   /manage/* -->
+            <!-- /manage/c/d.do /manage/** 拦截manage下面的所有请求，包括它的子路径 -->
+            <!-- /manage/e/f.do /manage/** -->
+            <mvc:mapping path="/manage/**"/>
+            <mvc:exclude-mapping path="/manage/user/login.do" />
+            <bean class="com.mmall.common.interceptor.AuthorityInterceptor" />
+        </mvc:interceptor>
+    </mvc:interceptors>
 
 </beans>
