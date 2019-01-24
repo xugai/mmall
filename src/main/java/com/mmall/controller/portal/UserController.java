@@ -74,12 +74,12 @@ public class UserController {
     public ServerResponse<User> getUserInfo(HttpServletRequest httpServletRequest){
         String loginToken = CookieUtil.readLoginToken(httpServletRequest);
         if(StringUtil.isEmpty(loginToken)){
-            return ServerResponse.createByErrorCodeAndMessage(ResponseCode.NEED_LOGIN.getCode(), "请登录后再重试！");
+            return ServerResponse.createByErrorMessage("用户未登录,请登录后再重试！");
         }
         String userStr = ShardedRedisPoolUtil.get(loginToken);
         User user = JsonUtil.string2Obj(userStr, User.class);
         if(user == null){
-            return ServerResponse.createByErrorCodeAndMessage(ResponseCode.NEED_LOGIN.getCode(), "请登录后再重试！");
+            return ServerResponse.createByErrorMessage("用户未登录,请登录后再重试！");
         }
         return ServerResponse.createBySuccess(user);
     }
