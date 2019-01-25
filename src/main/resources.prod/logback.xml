@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration scan="true" scanPeriod="60 seconds" debug="false">
     <property name="LOG_HOME" value="${CATALINA_HOME}/logs"></property>
+    <!-- 类ConsoleAppender 把日志输出到控制台 -->
     <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
         <encoding>UTF-8</encoding>
         <encoder>
@@ -11,9 +12,13 @@
         </filter>
     </appender>
 
+    <!-- 滚动记录文件，先将日志记录到指定文件，当符合某个条件时，将日志记录到其他文件 -->
+    <!-- 以下配置表示每天生成一个日志文件(基于日期改变而滚动日志文件)，日志文件最多保存10天 -->
     <appender name="mmall" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <!--<File>D:/QLDownload/apache-tomcat-7.0.75/logs/mmall.log</File>-->
         <File>${LOG_HOME}/mmall.log</File>
+        <!-- 当发生滚动时，决定RollingFileAppender的行为，涉及文件移动和重命名。属性class定义具体的滚动策略类 -->
+        <!-- TimeBasedRollingPolicy,最常用的滚动策略，它根据时间来制定滚动策略，既负责滚动也负责触发滚动行为 -->
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <fileNamePattern>${LOG_HOME}/mmall.log.%d{yyyy-MM-dd}.gz</fileNamePattern>
             <append>true</append>
@@ -27,7 +32,7 @@
         </encoder>
     </appender>
 
-
+    <!-- 该appender同上面配置的appender一样 -->
     <appender name="error" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <!--<File>D:/QLDownload/apache-tomcat-7.0.75/logs/error.log</File>-->
         <File>${LOG_HOME}/error.log</File>
@@ -47,6 +52,10 @@
         </filter>
     </appender>
 
+    <!-- logback 的日志级别大小为: TRACE < DEBUG < INFO < WARN < ERROR -->
+    <!-- 节点<loger>：用来设置某一个包或具体的某一个类的日志打印级别、以及指定<appender>。<loger>仅有一个name属性，一个可选的level和一个可选的addtivity属性 -->
+    <!-- addtivity: 是否向上级loger传递打印信息 -->
+    <!-- 以下配置可以理解成: 在appender mmall/console/error这三者中来自包com.mmall的日志信息级别最低都是INFO级别 -->
     <logger name="com.mmall" additivity="false" level="INFO" >
         <appender-ref ref="mmall" />
         <appender-ref ref="console"/>
@@ -55,7 +64,7 @@
 
 
 
-    <!-- geelynote mybatis log 日志 -->
+    <!-- mybatis log 日志 -->
 
     <logger name="com.mmall.dao" level="DEBUG"/>
 
@@ -74,7 +83,7 @@
     <!--<appender-ref ref="console"/>-->
     <!--</logger>-->
 
-
+    <!-- 只有当appender产生的日志信息级别 >= DEBUG级别的时候,appender才会把日志信息输出出来 -->
     <root level="DEBUG">
         <appender-ref ref="console"/>
         <appender-ref ref="error"/>
