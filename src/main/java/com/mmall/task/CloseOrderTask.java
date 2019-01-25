@@ -11,7 +11,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.redisson.Redisson;
 import org.redisson.api.RLock;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
@@ -62,7 +61,7 @@ public class CloseOrderTask {
 
 
     // Redis分布式锁优化版,加入双重锁验证机制,防止死锁情况发生,提供更可靠的执行逻辑
-    @Scheduled(cron = "0 */1 * * * ?")
+//    @Scheduled(cron = "0 */1 * * * ?")
     public void closeOrderVERSION3(){
         log.info("{},定时调度任务——关闭订单开始执行.", DateTimeUtil.dateToStr(new Date()));
         Long timeout = Long.parseLong(PropertiesUtil.getProperty("close.order.task.lock.timeout", "5000"));
