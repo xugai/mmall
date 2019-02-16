@@ -38,6 +38,10 @@ public class ProductServiceImpl implements IProductService {
     @Autowired
     private ICategoryService iCategoryService;
 
+    public Integer getProductCount(){
+        return productMapper.getProductCount();
+    }
+
     public ServerResponse productSaveOrUpdate(Product product){
         if(product == null){
             return ServerResponse.createByErrorMessage("请求的参数错误,请重试！");

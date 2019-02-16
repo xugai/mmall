@@ -6,6 +6,9 @@ import org.apache.ibatis.annotations.Param;
 import java.util.List;
 
 public interface ProductMapper {
+
+    int getProductCount();
+
     int deleteByPrimaryKey(Integer id);
 
     int insert(Product record);

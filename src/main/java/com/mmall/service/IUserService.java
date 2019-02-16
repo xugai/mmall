@@ -3,10 +3,17 @@ package com.mmall.service;
 import com.mmall.common.ServerResponse;
 import com.mmall.pojo.User;
 
+import java.util.List;
+
 /**
  * Created by rabbit on 2018/2/6.
  */
 public interface IUserService {
+
+    Integer getUserCount();
+
+    ServerResponse<List<User>> getUserList();
+
     ServerResponse<User> login(String username, String password);
 
     ServerResponse<String> register(User user);

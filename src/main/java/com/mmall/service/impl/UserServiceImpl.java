@@ -11,6 +11,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -21,6 +23,19 @@ public class UserServiceImpl implements IUserService {
 
     @Autowired
     private UserMapper userMapper;
+
+
+    @Override
+    public Integer getUserCount(){
+        return userMapper.getUserCount();
+    }
+
+    @Override
+    public ServerResponse<List<User>> getUserList(){
+        List<User> userList = new ArrayList<User>();
+        userList = userMapper.getUserList();
+        return ServerResponse.createBySuccess(userList);
+    }
 
     @Override
     public ServerResponse<User> login(String username, String password) {

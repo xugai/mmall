@@ -18,6 +18,18 @@
   <sql id="Base_Column_List" >
     id, username, password, email, phone, question, answer, role, create_time, update_time
   </sql>
+
+  <select id="getUserCount" resultType="int">
+    select count(id) from mmall_user;
+  </select>
+
+  <select id="getUserList" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from mmall_user
+    order by id asc
+  </select>
+  
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
     <include refid="Base_Column_List" />

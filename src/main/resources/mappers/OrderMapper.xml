@@ -23,6 +23,11 @@
     id, order_no, user_id, shipping_id, payment, payment_type, postage, status, payment_time, 
     send_time, end_time, close_time, create_time, update_time
   </sql>
+
+  <select id="getOrderCount" resultType="int">
+    select count(id) from mmall_order
+  </select>
+
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
     <include refid="Base_Column_List" />
