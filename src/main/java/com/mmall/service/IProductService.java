@@ -9,6 +9,9 @@ import com.mmall.vo.ProductDetailVo;
  * Created by rabbit on 2018/2/9.
  */
 public interface IProductService {
+
+    Integer getProductCount();
+
     ServerResponse productSaveOrUpdate(Product product);
 
     ServerResponse setSaleStatus(Integer productId,Integer status);

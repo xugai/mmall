@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.util.List;
 
 /**
  * Created by rabbit on 2018/2/8.
@@ -44,5 +45,11 @@ public class UserManagerController {
         }else{
             return response;
         }
+    }
+
+    @RequestMapping("list.do")
+    @ResponseBody
+    public ServerResponse<List<User>> getUserList(){
+        return iUserService.getUserList();
     }
 }

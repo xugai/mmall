@@ -68,6 +68,11 @@ public class OrderServiceImpl implements IOrderService {
 
     private AlipayTradeService tradeService;
 
+    @Override
+    public int getOrderCount(){
+        return orderMapper.getOrderCount();
+    }
+
 
     public ServerResponse createOrder(Integer userId,Integer shippingId){
         //从购物车中获取数据

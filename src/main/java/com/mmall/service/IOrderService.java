@@ -11,6 +11,8 @@ import java.util.Map;
  */
 public interface IOrderService {
 
+    int getOrderCount();
+
     ServerResponse<Map> pay(Long orderNo, Integer userId, String path);
 
     ServerResponse callBack_Check(Map<String,String> map);
