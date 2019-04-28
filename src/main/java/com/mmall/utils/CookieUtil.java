@@ -20,7 +20,7 @@ public class CookieUtil {
         if(cookies != null){
             for(Cookie cookie : cookies){
                 if(!StringUtils.isEmpty(cookie.getName()) && cookie.getName().equals(COOKIE_NAME)){
-                    log.info("match cookie {} in client.", COOKIE_NAME);
+//                    log.info("match cookie {} in client.", COOKIE_NAME);
                     return cookie.getValue();
                 }
             }
