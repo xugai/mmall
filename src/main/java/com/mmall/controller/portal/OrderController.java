@@ -1,8 +1,5 @@
 package com.mmall.controller.portal;
 
-import com.alipay.api.AlipayApiException;
-import com.alipay.api.internal.util.AlipaySignature;
-import com.alipay.demo.trade.config.Configs;
 import com.github.pagehelper.PageInfo;
 import com.github.pagehelper.StringUtil;
 import com.google.common.collect.Maps;
@@ -153,16 +150,16 @@ public class OrderController {
 
         //接下来的步骤非常重要,我们要验证回调的准确性,确认是由支付宝发出的回调,同时还要避免支付宝那边的重复通知
         map.remove("sign_type");
-        try {
-            boolean isAliPay_Callback = AlipaySignature.rsaCheckV2(map, Configs.getAlipayPublicKey(),"utf-8","RSA2");
-            if(!isAliPay_Callback){
-                logger.error("回调验证失败,此回调不是由支付宝发出的！");
-                return ServerResponse.createByErrorMessage("回调验证失败,此回调不是由支付宝发出的！");
-            }
-        } catch (AlipayApiException e) {
-            logger.error("支付宝回调验证发生异常！");
-            e.printStackTrace();
-        }
+//        try {
+//            boolean isAliPay_Callback = AlipaySignature.rsaCheckV2(map, Configs.getAlipayPublicKey(),"utf-8","RSA2");
+//            if(!isAliPay_Callback){
+//                logger.error("回调验证失败,此回调不是由支付宝发出的！");
+//                return ServerResponse.createByErrorMessage("回调验证失败,此回调不是由支付宝发出的！");
+//            }
+//        } catch (AlipayApiException e) {
+//            logger.error("支付宝回调验证发生异常！");
+//            e.printStackTrace();
+//        }
 
         // TODO: 2018/2/19 接下来要验证数据,在service层里校验,包括但不限于订单号、实际金额、商户id是否为该订单号对应的id
         ServerResponse serverResponse = iOrderService.callBack_Check(map);

@@ -493,9 +493,9 @@ public class OrderServiceImpl implements IOrderService {
         if(order.getStatus() >= Const.OrderStatusEnum.PAID.getCode()){
             return ServerResponse.createBySuccessMessage("支付宝重复发送通知！");
         }
-        if(!Configs.getPid().equals(seller_id)){
-            return ServerResponse.createByErrorMessage("回调的商户id匹配不上！");
-        }
+//        if(!Configs.getPid().equals(seller_id)){
+//            return ServerResponse.createByErrorMessage("回调的商户id匹配不上！");
+//        }
         //如果本次回调是通知我们客户付款成功，则我们要记录本次交易时间
         if(Const.AlipayCallback.TRADE_STATUS_TRADE_SUCCESS.equals(trade_status)){
             order.setPaymentTime(DateTimeUtil.strToDate(map.get("gmt_payment")));
